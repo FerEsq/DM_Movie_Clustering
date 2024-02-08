@@ -1,12 +1,18 @@
 ---
-title: "Movies Analysis"
+title: "Movies Analysis - Clusters"
 author: "Francisco Castillo, Fernanda Esquivel y Andrés Montoya"
 date: "29/01/2024"
 output:
   html_document:
     df_print: paged
 ---
+# Movies Analysis
+
+## Preprocesamiento de datos
 ```{r}
+install.packages("factoextra")
+library(factoextra)
+
 movies <- read.csv("data/movies.csv")
 useful <- c("popularity", "budget", "revenue", "genres", "genresAmount", "director", 
                       "runtime", "productionCountry", "productionCountriesAmount", "releaseDate", "voteCount", 
@@ -14,7 +20,16 @@ useful <- c("popularity", "budget", "revenue", "genres", "genresAmount", "direct
 movies_new <- subset(movies, select = useful)
 summary(movies_new)
 ```
+### Variables no utiles
+- Id: Es el identificador unico y no proporciona información relevante
+- original_title y title: Representan el nombre de la pelicula, por lo que no aportan información relevante a menos que se realice un análisis especifico de los nombres de las peliculas
+- originalLanguage: Representa el idioma original de la pelicula, no aporta información relevante
+- homePage y video: No aporta información relevante para la agrupación de las peliculas
+- productionCoAmount, productionCompany y productionCompanyCountry: A pesar de que es importante para el analisis especifico de las peliculas, no aporta información relevante para la agrupación
+- actors y actorsCharacter: A pesar de que es importante para el analisis especifico de las peliculas, no aporta información relevante para la agrupación
 
+## Hopkins Test
 ```{r}
-
-```
+hopkins <- get_clust_tendency(movies_new, n = 100, graph = FALSE)
+print(hopkins)
+````
