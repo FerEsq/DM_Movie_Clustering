@@ -6,17 +6,21 @@ output:
   html_document:
     df_print: paged
 ---
+```{r}
+install.packages("factoextra")
+library(factoextra)
+```
 # Movies Analysis
 
 ## Preprocesamiento de datos
 ```{r}
-install.packages("factoextra")
-library(factoextra)
-
 movies <- read.csv("data/movies.csv")
-useful <- c("popularity", "budget", "revenue", "genres", "genresAmount", "director", 
-                      "runtime", "productionCountry", "productionCountriesAmount", "releaseDate", "voteCount", 
-                      "voteAvg", "actorsPopularity", "actorsAmount", "castWomenAmount", "castMenAmount")
+useful <- c("popularity", "budget", "revenue", "genresAmount", 
+                      "runtime", "productionCountriesAmount", "voteCount", 
+                      "voteAvg", "actorsAmount", "castWomenAmount", "castMenAmount")
+# Parse Cast Women Amount and Cast Men Amount to numeric
+movies$castWomenAmount <- as.numeric(movies$castWomenAmount)
+movies$castMenAmount <- as.numeric(movies$castMenAmount)
 movies_new <- subset(movies, select = useful)
 summary(movies_new)
 ```
@@ -27,6 +31,13 @@ summary(movies_new)
 - homePage y video: No aporta información relevante para la agrupación de las peliculas
 - productionCoAmount, productionCompany y productionCompanyCountry: A pesar de que es importante para el analisis especifico de las peliculas, no aporta información relevante para la agrupación
 - actors y actorsCharacter: A pesar de que es importante para el analisis especifico de las peliculas, no aporta información relevante para la agrupación
+- actorsPopularity: TODO
+- releaseDate: TODO
+- director: TODO
+- genres: TODO
+- productionCountry: TODO
+
+
 
 ## Hopkins Test
 ```{r}
