@@ -7,8 +7,14 @@ output:
     df_print: paged
 ---
 ```{r}
-install.packages("factoextra")
+#install.packages("factoextra")
+#install.packages("fpc")
+#install.packages("clustertend")
+```
+```{r}
 library(factoextra)
+library(fpc)
+library(clustertend)
 ```
 # Movies Analysis
 
@@ -22,6 +28,7 @@ useful <- c("popularity", "budget", "revenue", "genresAmount",
 movies$castWomenAmount <- as.numeric(movies$castWomenAmount)
 movies$castMenAmount <- as.numeric(movies$castMenAmount)
 movies_new <- subset(movies, select = useful)
+movies_new <- na.omit(movies_new)
 summary(movies_new)
 ```
 ### Variables no utiles
@@ -39,8 +46,26 @@ summary(movies_new)
 
 
 
-## Hopkins Test
+## VAT
 ```{r}
-hopkins <- get_clust_tendency(movies_new, n = 100, graph = FALSE)
-print(hopkins)
-````
+# Seed for the random sample
+set.seed(1313)
+# Sample of 1500 rows
+sample <- movies_new[sample(1:nrow(movies_new), 1500),]
+# Distribution of the sample
+distribution <- get_dist(sample)
+
+# Visualize the distribution as a heatmap
+fviz_dist(distribution, gradient = list(low= "#ffffff", mid = "white", high ="#000000"))
+```
+
+Al realizar el análisis de la distribución de las variables por medio de un heatmap, se puede observar que no se forman clusters claros, por lo que se procederá a realizar un análisis de clusters para determinar la cantidad de clusters que se pueden formar.
+
+## Elbow Method
+```{r}
+set.seed(1313)
+sample <- movies_new[sample(1:nrow(movies_new), 1500),]
+fviz_nbclust(sample, kmeans, method = "wss") + geom_vline(xintercept = 3, linetype = 2)
+```
+
+Al realizar el análisis del método del codo, se puede observar que el codo se encuentra entre 3 y 4 clusters. Debido a la poca diferencia entre 3 y 4 clusters, se procederá a realizar un análisis de clusters con 3 clusters priorizando así la simplicidad del modelo y el tiempo de ejecución.
