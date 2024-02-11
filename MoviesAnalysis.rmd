@@ -16,6 +16,7 @@ output:
 library(factoextra)
 library(fpc)
 library(hopkins)
+library(cluster)
 ```
 # Movies Analysis
 
@@ -158,3 +159,34 @@ Con K = 4:
 - Hierarchical: 0.39
 
 Se han analizado 3 y 4 clusters como se indicaba en el ejercicio anterior. Podemos observar que el clustering jerárquico tiene un desempeño superior al clustering de K-means. Sin embargo, su resultado es engañoso. Esto debido a que el segundo cluster que genera contiene prácticamente a todos los elementos. Por lo que es un análisis que no es útil. Por otro lado, el clustering de K-means tiene un desempeño bajo, pero es más confiable. Por lo que se procederá a realizar el análisis con 3 clusters de los clusters generados por K-means.
+
+## 6. Análisis de Clusters
+```{r}
+#Calcular las medias de las variables para cada cluster
+cluster_means <- aggregate(movies_new, by=list(cluster=kmeans_model_3$cluster), FUN=mean)
+
+colnames(cluster_means)[1] <- "Cluster"
+
+#Mostrar las medias de las variables por cluster
+print(cluster_means)
+
+#Visualizar las diferencias en las variables clave entre los clusters
+library(ggplot2)
+for(i in 2:ncol(movies_new)) {
+  p <- ggplot(cluster_means, aes(x=Cluster, y=cluster_means[,i], fill=Cluster)) +
+    geom_bar(stat="identity") +
+    theme_minimal() +
+    labs(title=paste("Mean of", colnames(cluster_means)[i], "by Cluster"),
+         x="Cluster",
+         y=colnames(cluster_means)[i])
+  print(p)
+}
+
+#Análisis de siluetas para visualizar la cohesión y separación de los clusters
+silhouette_kmeans_3 <- silhouette(kmeans_model_3$cluster, dist(movies_new))
+```
+
+```{r}
+#Análisis de siluetas para visualizar la cohesión y separación de los clusters
+fviz_silhouette(silhouette_kmeans_3) + labs(title = "Silhouette Analysis for K-means with 3 Clusters")
+```
