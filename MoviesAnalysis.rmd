@@ -32,6 +32,7 @@ movies$castMenAmount <- as.numeric(movies$castMenAmount)
 movies_new <- subset(movies, select = useful)
 movies_new <- na.omit(movies_new)
 # Scale the data
+for_analysis <- movies_new
 movies_new <- scale(movies_new)
 summary(movies_new)
 ```
@@ -119,10 +120,10 @@ hirarchical_model <- hclust(dist(movies_new), method = "complete")
 ```
 ```{r}
 # Visualize the dendrogram
-fviz_dend(hirarchical_model, k = 3, cex = 0.6, k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"))
+# fviz_dend(hirarchical_model, k = 3, cex = 0.6, k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"))
 ```
 ```{r}
-fviz_dend(hirarchical_model, k = 4, cex = 0.6, k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"))
+# fviz_dend(hirarchical_model, k = 4, cex = 0.6, k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"))
 ```
 ## 5. Silhouette Analysis
 ```{r}
@@ -162,19 +163,22 @@ Se han analizado 3 y 4 clusters como se indicaba en el ejercicio anterior. Podem
 
 ## 6. Análisis de Clusters
 ```{r}
-#Calcular las medias de las variables para cada cluster
-cluster_means <- aggregate(movies_new, by=list(cluster=kmeans_model_3$cluster), FUN=mean)
 
-colnames(cluster_means)[1] <- "Cluster"
+# Assign the cluster labels from the kmeans model to the original data
+for_analysis$cluster <- kmeans_model_3$cluster
+```
+```{r}
+# Calculate the mean of each variable by cluster
+cluster_means <- aggregate(for_analysis, by=list(Cluster=for_analysis$cluster), FUN=mean)
 
-#Mostrar las medias de las variables por cluster
+# # Print the mean of each variable by cluster
 print(cluster_means)
 ```
 
 ```{r}
-#Visualizar las diferencias en las variables clave entre los clusters
+# Visualize the differences in the key variables between the clusters
 library(ggplot2)
-for(i in 2:ncol(movies_new)) {
+for(i in 2:ncol(cluster_means)) {
   p <- ggplot(cluster_means, aes(x=Cluster, y=cluster_means[,i], fill=Cluster)) +
     geom_bar(stat="identity") +
     theme_minimal() +
@@ -184,12 +188,34 @@ for(i in 2:ncol(movies_new)) {
   print(p)
 }
 ```
+Al analizar los clusters, podemos obtener la siguiente información:
 
-```{r}
-#Análisis de siluetas para visualizar la cohesión y separación de los clusters
-silhouette_kmeans_3 <- silhouette(kmeans_model_3$cluster, dist(movies_new))
-fviz_silhouette(silhouette_kmeans_3) + labs(title = "Silhouette Analysis for K-means with 3 Clusters")
-```
+- Cluster 1
+- - Presupuesto más bajo
+- - Obtienen los menores ingresos
+- - Abarcan la menor cantidad de géneros
+- - Tienen la menor duración
+- - Utilizan mayor cantidad de países para rodaje
+- - Utilizan la menor cantidad de actores
+- - Utilizan la menor cantidad de actores mujeres
+- Cluster 2
+- - Presupuesto medio
+- - Ingresos medios
+- - Abarcan, al menos, 2 géneros
+- - Duran al rededor de 90 minutos
+- - Se graban entre 1 y 2 países
+- - Usan, al rededor, de 20 actores, con 1/4 siendo mujeres
+- Cluster 3
+- - Presupuesto más alto
+- - Obtienen los mayores ingresos
+- - Abarcan la mayor cantidad de géneros
+- - Duración mayor a 100 minutos
+- - Se graban entre 1 y 2 países
+- - Usan más de 50 actores, donde más de 10 son mujeres
 
-
-El análisis combinado revela que el Cluster 3 agrupa películas populares y de alto presupuesto con mayor participación femenina en el elenco, mientras que los Clusters 1 y 2 contienen películas con menores valores en estas métricas. La calidad de la asignación de clusters es mixta, con el Cluster 3 bien definido, pero el Cluster 1 mostrando una cohesión interna débil.
+## 7. Trabajo que sigue
+- **Segmentación de la industria cinematográfica:** Los tres clusters representan diferentes segmentos dentro de la industria del cine. El Cluster 1 podría estar compuesto por películas independientes o de bajo presupuesto, mientras que el Cluster 3 podría incluir producciones de alto presupuesto respaldadas por grandes estudios. Investigar más a fondo qué tipo de películas se agrupan en cada cluster podría proporcionar información valiosa sobre las dinámicas del mercado.
+- **Relación entre presupuesto e ingresos:** Examinar la relación entre el presupuesto de producción y los ingresos generados por cada cluster podría revelar patrones interesantes. ¿Las películas de alto presupuesto siempre obtienen mayores ingresos? ¿O hay casos en los que películas de bajo presupuesto superan las expectativas? Analizar esta relación podría ayudar a los inversores y productores a tomar decisiones más informadas.
+- **Géneros y duración:** Los clusters difieren en la cantidad de géneros que abarcan y en la duración de las películas. ¿Hay géneros específicos que tienden a agruparse en un cluster en particular? ¿Existe una correlación entre la duración de una película y su éxito financiero? Explorar estas tendencias podría proporcionar ideas para estrategias de marketing y distribución.
+- **Distribución geográfica y rodaje:** El número de países utilizados para el rodaje varía entre los clusters. Investigar por qué algunas películas se filman en múltiples países mientras que otras se limitan a uno o dos podría arrojar luz sobre las preferencias de los cineastas, los costos de producción y las oportunidades de mercado en diferentes regiones.
+- **Equidad de género en la industria cinematográfica:** El Cluster 3 utiliza más actores en general, pero también tiene una mayor proporción de actores mujeres. ¿Qué factores contribuyen a esta diferencia? ¿Cómo se puede fomentar una mayor representación de mujeres en roles cinematográficos? Explorar estas preguntas podría ser relevante desde una perspectiva social y cultural. 
