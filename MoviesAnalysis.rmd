@@ -38,16 +38,16 @@ summary(movies_new)
 ```
 ### Variables no utiles
 - Id: Es el identificador unico y no proporciona información relevante
-- original_title y title: Representan el nombre de la pelicula, por lo que no aportan información relevante a menos que se realice un análisis especifico de los nombres de las peliculas
-- originalLanguage: Representa el idioma original de la pelicula, no aporta información relevante
-- homePage y video: No aporta información relevante para la agrupación de las peliculas
-- productionCoAmount, productionCompany y productionCompanyCountry: A pesar de que es importante para el analisis especifico de las peliculas, no aporta información relevante para la agrupación
-- actors y actorsCharacter: A pesar de que es importante para el analisis especifico de las peliculas, no aporta información relevante para la agrupación
-- actorsPopularity: TODO
-- releaseDate: TODO
-- director: TODO
-- genres: TODO
-- productionCountry: TODO
+- original_title y title: Representan el nombre de la película, por lo que no aportan información relevante a menos que se realice un análisis especifico de los nombres de las películas
+- originalLanguage: Representa el idioma original de la película, no aporta información relevante
+- homePage y video: No aporta información relevante para la agrupación de las películas
+- productionCoAmount, productionCompany y productionCompanyCountry: A pesar de que es importante para el análisis especifico de las películas, no aporta información relevante para la agrupación
+- actors y actorsCharacter: A pesar de que es importante para el análisis especifico de las películas, no aporta información relevante para la agrupación
+- actorsPopularity: Ya que da información sobre la popularidad de cada uno de los actores, no aporta información relevante para la agrupación
+- releaseDate: No es cuantitativa, por lo que no aporta información relevante para la agrupación
+- director: No es una variable cuantitativa, por lo que no puede ser utilizada para la agrupación
+- genres: No es cuantitativa, por lo que no aporta información relevante para la agrupación
+- productionCountry: No es cuantitativa, por lo que no aporta información relevante para la agrupación
 
 
 
@@ -218,4 +218,4 @@ Al analizar los clusters, podemos obtener la siguiente información:
 - **Relación entre presupuesto e ingresos:** Examinar la relación entre el presupuesto de producción y los ingresos generados por cada cluster podría revelar patrones interesantes. ¿Las películas de alto presupuesto siempre obtienen mayores ingresos? ¿O hay casos en los que películas de bajo presupuesto superan las expectativas? Analizar esta relación podría ayudar a los inversores y productores a tomar decisiones más informadas.
 - **Géneros y duración:** Los clusters difieren en la cantidad de géneros que abarcan y en la duración de las películas. ¿Hay géneros específicos que tienden a agruparse en un cluster en particular? ¿Existe una correlación entre la duración de una película y su éxito financiero? Explorar estas tendencias podría proporcionar ideas para estrategias de marketing y distribución.
 - **Distribución geográfica y rodaje:** El número de países utilizados para el rodaje varía entre los clusters. Investigar por qué algunas películas se filman en múltiples países mientras que otras se limitan a uno o dos podría arrojar luz sobre las preferencias de los cineastas, los costos de producción y las oportunidades de mercado en diferentes regiones.
-- **Equidad de género en la industria cinematográfica:** El Cluster 3 utiliza más actores en general, pero también tiene una mayor proporción de actores mujeres. ¿Qué factores contribuyen a esta diferencia? ¿Cómo se puede fomentar una mayor representación de mujeres en roles cinematográficos? Explorar estas preguntas podría ser relevante desde una perspectiva social y cultural. 
+- **Equidad de género en la industria cinematográfica:** El Cluster 3 utiliza más actores en general, pero también tiene una mayor proporción de actores mujeres. ¿Qué factores contribuyen a esta diferencia? ¿Cómo se puede fomentar una mayor representación de mujeres en roles cinematográficos? Explorar estas preguntas podría ser relevante desde una perspectiva social y cultural.
