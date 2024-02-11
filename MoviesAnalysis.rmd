@@ -10,11 +10,12 @@ output:
 #install.packages("factoextra")
 # install.packages("fpc")
 # install.packages("clustertend")
+# install.packages("hopkins")
 ```
 ```{r}
 library(factoextra)
 library(fpc)
-library(clustertend)
+library(hopkins)
 ```
 # Movies Analysis
 
@@ -67,18 +68,20 @@ Al realizar el análisis de la distribución de las variables por medio de un he
 ```{r}
 set.seed(1313)
 sample <- movies_new[sample(1:nrow(movies_new), 1500),]
-fviz_nbclust(sample, kmeans, method = "wss") + geom_vline(xintercept = 4, linetype = 2)
+fviz_nbclust(sample, kmeans, method = "wss") + geom_vline(xintercept = 3, linetype = 2)
 ```
 
 Al realizar el análisis del método del codo, se puede observar que el codo se encuentra entre 3 y 4 clusters. Debido a la poca diferencia entre 3 y 4 clusters, se procederá a realizar un análisis de clusters con 3 clusters priorizando así la simplicidad del modelo y el tiempo de ejecución.
 
-## 4. K-means Clustering
+## 4. Clustering
+### 4.1. K-means
 ```{r}
 # Seed for the random sample
 set.seed(1313)
-kmeans_model <- kmeans(movies_new, centers = 4, nstart = 25)
+kmeans_model <- kmeans(movies_new, centers = 3, nstart = 25)
 ```
 ```{r}
+# Ignore outliers
 fviz_cluster(
         kmeans_model,
         data = movies_new,
@@ -91,3 +94,35 @@ fviz_cluster(
         main = "K-means Clustering"
 )
 ```
+### 4.2. Hierarchical Clustering
+```{r}
+# Hierarchical clustering with 4 clusters
+hirarchical_model <- hclust(dist(movies_new), method = "complete")
+```
+```{r}
+# Visualize the dendrogram
+fviz_dend(hirarchical_model, k = 3, cex = 0.6, k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"))
+```
+## 5. Silhouette Analysis
+```{r}
+silhouette_kmeans <- silhouette(kmeans_model$cluster, dist(movies_new))
+```
+```{r}
+silhouette_hierarchical <- silhouette(cutree(hirarchical_model, k = 3), dist(movies_new))
+```
+```{r}
+fviz_silhouette(silhouette_kmeans) + labs(title = "Silhouette Analysis - K-means")
+```
+```{r}
+fviz_silhouette(silhouette_hierarchical) + labs(title = "Silhouette Analysis - Hierarchical")
+```
+Se han obtenido los siguientes valores promedio para el valor de las siluetas:
+Con K = 3:
+- K-means: 0.17
+- Hierarchical: 0.39
+
+Con K = 4:
+- K-means: 0.25
+- Hierarchical: 0.52
+
+Se han analizado 3 y 4 clusters como se indicaba en el ejercicio anterior. Podemos observar que el clustering jerárquico tiene un desempeño superior al clustering de K-means. Con K=4 el resultado es engañoso, pues el promedio es tan alto debido a que ha agrupado prácticamente todos los datos en el segundo cluster. En conclusión, el mejor desempeño se obtiene con el clustering jerárquico con 3 clusters.
