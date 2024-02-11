@@ -78,12 +78,29 @@ Al realizar el análisis del método del codo, se puede observar que el codo se 
 ```{r}
 # Seed for the random sample
 set.seed(1313)
-kmeans_model <- kmeans(movies_new, centers = 3, nstart = 25)
+kmeans_model_4 <- kmeans(movies_new, centers = 4, nstart = 25)
 ```
 ```{r}
-# Ignore outliers
 fviz_cluster(
-        kmeans_model,
+        kmeans_model_4,
+        data = movies_new,
+        geom = "point",
+        ellipse.type = "convex",
+        ellipse = TRUE,
+        stand = TRUE,
+        xlab = FALSE,
+        ylab = FALSE,
+        main = "K-means Clustering"
+)
+```
+```{r}
+# Seed for the random sample
+set.seed(1313)
+kmeans_model_3 <- kmeans(movies_new, centers = 3, nstart = 25)
+```
+```{r}
+fviz_cluster(
+        kmeans_model_3,
         data = movies_new,
         geom = "point",
         ellipse.type = "convex",
@@ -103,26 +120,41 @@ hirarchical_model <- hclust(dist(movies_new), method = "complete")
 # Visualize the dendrogram
 fviz_dend(hirarchical_model, k = 3, cex = 0.6, k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"))
 ```
+```{r}
+fviz_dend(hirarchical_model, k = 4, cex = 0.6, k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"))
+```
 ## 5. Silhouette Analysis
 ```{r}
-silhouette_kmeans <- silhouette(kmeans_model$cluster, dist(movies_new))
+silhouette_kmeans_4 <- silhouette(kmeans_model_4$cluster, dist(movies_new))
 ```
 ```{r}
-silhouette_hierarchical <- silhouette(cutree(hirarchical_model, k = 3), dist(movies_new))
+silhouette_kmeans_3 <- silhouette(kmeans_model_3$cluster, dist(movies_new))
 ```
 ```{r}
-fviz_silhouette(silhouette_kmeans) + labs(title = "Silhouette Analysis - K-means")
+silhouette_hierarchical_4 <- silhouette(cutree(hirarchical_model, k = 4), dist(movies_new))
 ```
 ```{r}
-fviz_silhouette(silhouette_hierarchical) + labs(title = "Silhouette Analysis - Hierarchical")
+silhouette_hierarchical_3 <- silhouette(cutree(hirarchical_model, k = 3), dist(movies_new))
+```
+```{r}
+fviz_silhouette(silhouette_kmeans_4) + labs(title = "Silhouette Analysis - K-means")
+```
+```{r}
+fviz_silhouette(silhouette_kmeans_3) + labs(title = "Silhouette Analysis - K-means")
+```
+```{r}
+fviz_silhouette(silhouette_hierarchical_4) + labs(title = "Silhouette Analysis - Hierarchical")
+```
+```{r}
+fviz_silhouette(silhouette_hierarchical_3) + labs(title = "Silhouette Analysis - Hierarchical")
 ```
 Se han obtenido los siguientes valores promedio para el valor de las siluetas:
 Con K = 3:
-- K-means: 0.17
-- Hierarchical: 0.39
-
-Con K = 4:
 - K-means: 0.25
 - Hierarchical: 0.52
 
-Se han analizado 3 y 4 clusters como se indicaba en el ejercicio anterior. Podemos observar que el clustering jerárquico tiene un desempeño superior al clustering de K-means. Con K=4 el resultado es engañoso, pues el promedio es tan alto debido a que ha agrupado prácticamente todos los datos en el segundo cluster. En conclusión, el mejor desempeño se obtiene con el clustering jerárquico con 3 clusters.
+Con K = 4:
+- K-means: 0.17
+- Hierarchical: 0.39
+
+Se han analizado 3 y 4 clusters como se indicaba en el ejercicio anterior. Podemos observar que el clustering jerárquico tiene un desempeño superior al clustering de K-means. Sin embargo, su resultado es engañoso. Esto debido a que el segundo cluster que genera contiene prácticamente a todos los elementos. Por lo que es un análisis que no es útil. Por otro lado, el clustering de K-means tiene un desempeño bajo, pero es más confiable. Por lo que se procederá a realizar el análisis con 3 clusters de los clusters generados por K-means.
