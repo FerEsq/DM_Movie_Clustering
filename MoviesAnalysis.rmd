@@ -169,7 +169,9 @@ colnames(cluster_means)[1] <- "Cluster"
 
 #Mostrar las medias de las variables por cluster
 print(cluster_means)
+```
 
+```{r}
 #Visualizar las diferencias en las variables clave entre los clusters
 library(ggplot2)
 for(i in 2:ncol(movies_new)) {
@@ -181,12 +183,10 @@ for(i in 2:ncol(movies_new)) {
          y=colnames(cluster_means)[i])
   print(p)
 }
-
-#Análisis de siluetas para visualizar la cohesión y separación de los clusters
-silhouette_kmeans_3 <- silhouette(kmeans_model_3$cluster, dist(movies_new))
 ```
 
 ```{r}
 #Análisis de siluetas para visualizar la cohesión y separación de los clusters
+silhouette_kmeans_3 <- silhouette(kmeans_model_3$cluster, dist(movies_new))
 fviz_silhouette(silhouette_kmeans_3) + labs(title = "Silhouette Analysis for K-means with 3 Clusters")
 ```
