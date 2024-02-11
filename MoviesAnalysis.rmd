@@ -190,3 +190,6 @@ for(i in 2:ncol(movies_new)) {
 silhouette_kmeans_3 <- silhouette(kmeans_model_3$cluster, dist(movies_new))
 fviz_silhouette(silhouette_kmeans_3) + labs(title = "Silhouette Analysis for K-means with 3 Clusters")
 ```
+
+
+El análisis combinado revela que el Cluster 3 agrupa películas populares y de alto presupuesto con mayor participación femenina en el elenco, mientras que los Clusters 1 y 2 contienen películas con menores valores en estas métricas. La calidad de la asignación de clusters es mixta, con el Cluster 3 bien definido, pero el Cluster 1 mostrando una cohesión interna débil.
