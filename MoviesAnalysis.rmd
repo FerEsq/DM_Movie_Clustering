@@ -120,10 +120,10 @@ hirarchical_model <- hclust(dist(movies_new), method = "complete")
 ```
 ```{r}
 # Visualize the dendrogram
-# fviz_dend(hirarchical_model, k = 3, cex = 0.6, k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"))
+fviz_dend(hirarchical_model, k = 3, cex = 0.6, k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"))
 ```
 ```{r}
-# fviz_dend(hirarchical_model, k = 4, cex = 0.6, k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"))
+fviz_dend(hirarchical_model, k = 4, cex = 0.6, k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"))
 ```
 ## 5. Silhouette Analysis
 ```{r}
@@ -191,27 +191,27 @@ for(i in 2:ncol(cluster_means)) {
 Al analizar los clusters, podemos obtener la siguiente información:
 
 - Cluster 1
-- - Presupuesto más bajo
-- - Obtienen los menores ingresos
-- - Abarcan la menor cantidad de géneros
-- - Tienen la menor duración
-- - Utilizan mayor cantidad de países para rodaje
-- - Utilizan la menor cantidad de actores
-- - Utilizan la menor cantidad de actores mujeres
+  - Presupuesto más bajo
+  - Obtienen los menores ingresos
+  - Abarcan la menor cantidad de géneros
+  - Tienen la menor duración
+  - Utilizan mayor cantidad de países para rodaje
+  - Utilizan la menor cantidad de actores
+  - Utilizan la menor cantidad de actores mujeres
 - Cluster 2
-- - Presupuesto medio
-- - Ingresos medios
-- - Abarcan, al menos, 2 géneros
-- - Duran al rededor de 90 minutos
-- - Se graban entre 1 y 2 países
-- - Usan, al rededor, de 20 actores, con 1/4 siendo mujeres
+  - Presupuesto medio
+  - Ingresos medios
+  - Abarcan, al menos, 2 géneros
+  - Duran al rededor de 90 minutos
+  - Se graban entre 1 y 2 países
+  - Usan, al rededor, de 20 actores, con 1/4 siendo mujeres
 - Cluster 3
-- - Presupuesto más alto
-- - Obtienen los mayores ingresos
-- - Abarcan la mayor cantidad de géneros
-- - Duración mayor a 100 minutos
-- - Se graban entre 1 y 2 países
-- - Usan más de 50 actores, donde más de 10 son mujeres
+  - Presupuesto más alto
+  - Obtienen los mayores ingresos
+  - Abarcan la mayor cantidad de géneros
+  - Duración mayor a 100 minutos
+  - Se graban entre 1 y 2 países
+  - Usan más de 50 actores, donde más de 10 son mujeres
 
 ## 7. Trabajo que sigue
 - **Segmentación de la industria cinematográfica:** Los tres clusters representan diferentes segmentos dentro de la industria del cine. El Cluster 1 podría estar compuesto por películas independientes o de bajo presupuesto, mientras que el Cluster 3 podría incluir producciones de alto presupuesto respaldadas por grandes estudios. Investigar más a fondo qué tipo de películas se agrupan en cada cluster podría proporcionar información valiosa sobre las dinámicas del mercado.
